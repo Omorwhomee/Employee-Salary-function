@@ -1,10 +1,9 @@
-
-import pandas
+import pandas as pd
 import os
 import csv
 import zipfile
 
-# Step 1: Import the salary data
+## Import the salary data
 def load_data(file_path):
     try:
         data = pd.read_csv(file_path)
@@ -14,7 +13,7 @@ def load_data(file_path):
         print(f"Error: The file at {file_path} was not found.")
         return None
 
-# Step 2: Create Employee Function
+## Create Employee Function
 def get_employee_details(employee_name, employee_data):
     try:
         details = employee_data[employee_data['Name'] == employee_name]
@@ -26,7 +25,7 @@ def get_employee_details(employee_name, employee_data):
         print(f"Error: {e}")
         return None
 
-# Step 3: Data Processing with Dictionary
+## Data Processing with Dictionary
 def create_employee_dict(data):
     try:
         return data.set_index('Name').to_dict(orient='index')
@@ -34,7 +33,7 @@ def create_employee_dict(data):
         print(f"Error processing data: {e}")
         return {}
 
-# Step 5: Export Employee Details to a CSV in a ZIP file
+## Export Employee Details to a CSV in a ZIP file
 def export_employee_details(employee_details, output_dir="Employee Profile"):
     os.makedirs(output_dir, exist_ok=True)
     csv_file = os.path.join(output_dir, "employee_details.csv")
@@ -43,6 +42,7 @@ def export_employee_details(employee_details, output_dir="Employee Profile"):
             writer = csv.DictWriter(file, fieldnames=employee_details.keys())
             writer.writeheader()
             writer.writerow(employee_details)
+
         # Create ZIP file
         zip_file = f"{output_dir}.zip"
         with zipfile.ZipFile(zip_file, 'w') as zf:
@@ -51,10 +51,11 @@ def export_employee_details(employee_details, output_dir="Employee Profile"):
     except Exception as e:
         print(f"Error exporting data: {e}")
 
-# Main Workflow
+# Main employee workflow
 if __name__ == "__main__":
     file_path = "salary_data.csv"  # Replace with the correct path
     salary_data = load_data(file_path)
+    print("Current Directory:", os.getcwd())
     
     if salary_data is not None:
         employee_dict = create_employee_dict(salary_data)
@@ -65,3 +66,5 @@ if __name__ == "__main__":
         details = get_employee_details(emp_name, salary_data)
         if details:
             export_employee_details(details)
+
+            

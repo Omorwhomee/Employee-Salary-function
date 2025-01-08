@@ -1,5 +1,5 @@
 
-# Step 6: Unzip and display data
+## Unzip and display data
 unzip_and_display <- function(zip_file, output_dir = "Employee Profile") {
   if (!file.exists(zip_file)) {
     stop("Error: ZIP file not found!")
